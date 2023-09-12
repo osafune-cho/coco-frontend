@@ -43,7 +43,7 @@ export default function Home() {
 			</NextLink>
 		</header>
 		<div className={imageStyle}>
-			<DisplayImage imagePaths={imagePaths} />
+			<DisplayImage imagePaths={imagePaths} imageHeight={990} />
 		</div>
 	</div>
   )
