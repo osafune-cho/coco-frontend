@@ -1,24 +1,23 @@
 "use client"
 
 import { Course } from "@/types/models";
-import { MeiliSearch } from 'meilisearch'
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { css } from "../../../../styled-system/css";
 
 
 export default function CreateNewSessionPage() {
-  const { register, handleSubmit, watch, formState: { errors }, setError } = useForm<{ courseCode: string }>();
+  const { register: registerCourseCodeForm, handleSubmit: handleCourseCodeFormSubmit, formState: { errors: courseCodeFormErrors }, setError: setCourseCodeFormError } = useForm<{ courseCode: string }>();
+  const { register: registerCreateSessionForm, handleSubmit: handleCreateSessionForm, formState: { errors: createSessionFormErrors }, setError: setCreateSessionFormError } = useForm<{
+    name: string,
+    file: File,
+  }>();
   const [course, setCourse] = useState<Course | null>(null)
-
-  const client = new MeiliSearch({
-    host: process.env.NEXT_PUBLIC_MEILISEARCH_URL!,
-    apiKey: process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!,
-  })
 
   const getCourse = async ({ courseCode }: { courseCode: string }) => {
 
     await fetch(`${process.env.NEXT_PUBLIC_MEILISEARCH_URL!}/indexes/courses/documents/${courseCode}`, {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!}`
       },
@@ -27,8 +26,30 @@ export default function CreateNewSessionPage() {
         const course: Course = await res.json()
         setCourse(course)
       } else {
-        setError("courseCode", { type: "custom", message: "授業が見つかりません" })
+        setCourseCodeFormError("courseCode", { type: "custom", message: "授業が見つかりません" })
       }
+    })
+  }
+
+  const createSession = async ({ name, file }: { file: File, name: string }) => {
+    const team: {
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams`, {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+      })
+    }).then(res => res.json())
+
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${team.id}/materials`, {
+      method: "POST",
+      body: formData
     })
   }
 
@@ -42,11 +63,11 @@ export default function CreateNewSessionPage() {
     })}>
       <div>
         <p>講義コードを入力してください</p>
-        <form onSubmit={handleSubmit(getCourse)} className={css({
+        <form onSubmit={handleCourseCodeFormSubmit(getCourse)} className={css({
           display: "flex",
           gap: "4px",
         })}>
-          <input placeholder="講義コード" {...register("courseCode")} className={css({
+          <input placeholder="講義コード" {...registerCourseCodeForm("courseCode", { required: true })} className={css({
             border: "1px solid",
             borderColor: "gray.200",
             p: "4px",
@@ -60,7 +81,7 @@ export default function CreateNewSessionPage() {
           })}>取得</button>
 
         </form>
-        {errors.courseCode && (<p className={css({ color: "red.500" })}>{errors.courseCode?.message}</p>)}
+        {courseCodeFormErrors.courseCode && (<p className={css({ color: "red.500" })}>{courseCodeFormErrors.courseCode?.message}</p>)}
       </div>
 
       {course && (
@@ -74,21 +95,31 @@ export default function CreateNewSessionPage() {
             <p>{course.instructors}</p>
           </div>
 
-          <form className={css({
-            display: "grid",
-            gap: "8px"
-          })}>
-            <input type="file" />
-            <button className={css({
-              py: "4px",
-              px: "8px",
-              display: "block",
-              textAlign: "center",
-              w: "full",
-              background: "green.400",
-              rounded: "md",
-              cursor: "pointer",
-            })}>作成</button>
+          <form
+            onSubmit={handleCreateSessionForm(createSession)}
+            className={css({
+              display: "grid",
+              gap: "8px"
+            })}>
+            <div>
+              <label>セッション名</label>
+              <input {...registerCreateSessionForm("name", { required: true })} />
+            </div>
+            <div>
+              <label>ファイル</label>
+              <input type="file" {...registerCreateSessionForm("file", { required: true })} />
+            </div>
+            <button
+              className={css({
+                py: "4px",
+                px: "8px",
+                display: "block",
+                textAlign: "center",
+                w: "full",
+                background: "green.400",
+                rounded: "md",
+                cursor: "pointer",
+              })}>作成</button>
           </form>
         </>
       )
