@@ -1,9 +1,11 @@
 import { css } from "../../../../styled-system/css"
 import NextLink from "next/link"
 import { DisplayImage } from "../../../components/DisplayImage"
+import { getImageSlugs } from "../../../components/SlideImage"
 import { Quicksand } from 'next/font/google'
 import { get } from "http"
 import Image from "next/image";
+import { getImageSize } from "next/dist/server/image-optimizer"
 
 const Quicksand700 = Quicksand({
   weight: '700',
@@ -31,6 +33,8 @@ const imageStyle = css({
 	alignItems: "center",
 })
 
+const imagePaths = getImageSlugs()
+
 export default function Home() {
   return (
     <div className={mainStyle}>
@@ -42,7 +46,7 @@ export default function Home() {
 			</NextLink>
 		</header>
 		<div className={imageStyle}>
-			<DisplayImage />
+			<DisplayImage imagePaths={imagePaths} />
 		</div>
 	</div>
   )

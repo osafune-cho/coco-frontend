@@ -2,8 +2,6 @@ import { getImageSlugs } from "./SlideImage"
 import Image from "next/image";
 import { css } from "../../styled-system/css"
 
-const imagePaths = getImageSlugs();
-
 const imageStyle = css({
 	margin: "20px",
 })
@@ -12,8 +10,11 @@ const imageStyle = css({
  * 配列の全てのパスに対し、Image コンポーネントを返す
  */
 
-export const DisplayImage = () => {
-	console.log(imagePaths);
+type DisplayImageProps = {
+	imagePaths: string[];
+  };
+
+export const DisplayImage = ( { imagePaths }: DisplayImageProps ) => {
 	return (
 		<div >
 			{imagePaths.map((imagePath, i) => (
