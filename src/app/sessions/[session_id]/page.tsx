@@ -3,9 +3,6 @@ import NextLink from "next/link"
 import { DisplayImage } from "../../../components/DisplayImage"
 import { getImageSlugs } from "../../../components/SlideImage"
 import { Quicksand } from 'next/font/google'
-import { get } from "http"
-import Image from "next/image";
-import { getImageSize } from "next/dist/server/image-optimizer"
 
 const Quicksand700 = Quicksand({
   weight: '700',
