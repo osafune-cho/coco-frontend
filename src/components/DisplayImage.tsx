@@ -26,14 +26,14 @@ export const DisplayImage = ({ imagePaths, imageHeight }: DisplayImageProps) => 
 	//非同期処理
 	useEffect(() => {
 		if (!canvasRef.current) {
-			throw new Error("objectがnull");
+			return
 		}
 
 		const canvas = canvasRef.current;
 		const ctx = canvas.getContext("2d");
 
 		if (!ctx) {
-			throw new Error("context取得失敗");
+			return
 		}
 
 		/**
