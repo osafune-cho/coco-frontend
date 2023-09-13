@@ -18,10 +18,10 @@ type DisplayImageProps = {
 	imageHeight: number;
 };
 
-export const DisplayImage = ( { imagePaths, imageHeight }: DisplayImageProps ) => {
+export const DisplayImage = ({ imagePaths, imageHeight }: DisplayImageProps) => {
 	//canvasを作成
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-		const yPositionRef = useRef<number>(0);
+	const yPositionRef = useRef<number>(0);
 
 	//非同期処理
 	useEffect(() => {
@@ -59,7 +59,7 @@ export const DisplayImage = ( { imagePaths, imageHeight }: DisplayImageProps ) =
 
 			img.addEventListener('load', () => {
 				//アスペクト比を維持したまま、幅を700pxにする
-				const imgHeight = img.height * 700 / img.width ;
+				const imgHeight = img.height * 700 / img.width;
 				//画像を描画
 				ctx.drawImage(img, 0, yPositionRef.current, 700, imgHeight);
 				//次の画像のy座標を更新
@@ -73,7 +73,7 @@ export const DisplayImage = ( { imagePaths, imageHeight }: DisplayImageProps ) =
 
 	return (
 		<div>
-			<canvas className={imageStyle} ref={canvasRef} width={700} height={height}/>
+			<canvas className={imageStyle} ref={canvasRef} width={700} height={height} />
 		</div>
 	)
 }
