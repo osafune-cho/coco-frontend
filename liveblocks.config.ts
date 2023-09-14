@@ -1,10 +1,9 @@
 "use client";
 
-import { LiveList, createClient } from "@liveblocks/client";
+import { LiveList, LiveObject, createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
-export const client = createClient({
-  // authEndpoint: "/api/liveblocks-auth",
+const client = createClient({
   publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY!,
 });
 
@@ -13,12 +12,9 @@ type Presense = {
 }
 
 type Storage = {
-  comments: LiveList<string>,
+  comments: LiveList<LiveObject<{ message: string }>>,
 }
 
-const {
-  // suspense: { RoomProvider, useMutation },
-  RoomProvider, useMutation, useStorage
+export const {
+  suspense: { RoomProvider, useMutation, useStorage },
 } = createRoomContext<Presense, Storage>(client);
-
-export { RoomProvider, useMutation, useStorage };
