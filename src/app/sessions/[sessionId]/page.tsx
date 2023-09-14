@@ -1,6 +1,7 @@
+"use client"
+
 import { css } from "../../../../styled-system/css"
-import { LiveList } from "@liveblocks/client"
-import { ClientSideSuspense } from "@liveblocks/react"
+import { LiveList, LiveObject } from "@liveblocks/client"
 import { RoomProvider } from "../../../../liveblocks.config"
 import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
@@ -11,30 +12,37 @@ const mainStyle = css({
 
 // const imagePaths = getImageSlugs()
 
-const getTeam = async (teamId: string) => {
-	const team: {
-		id: string,
-		name: string,
-		courseId: string,
-		createdAt: string,
-		updatedAt: string
-	} = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}`).then(res => res.json())
+type Team = {
+	id: string,
+	name: string,
+	courseId: string,
+	createdAt: string,
+	updatedAt: string
 }
 
-export default async function SessionPage({ params }: { params: { sessionId: string } }) {
-	const team = await getTeam(params.sessionId)
+const getTeam = async (teamId: string): Promise<Team> => {
+	const team: Team = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}`).then(res => res.json())
+
+	return team
+}
+
+const getTeamMaterials = async (teamId: string): Promise<string[]> => {
+	const materials: string[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
+
+	return materials
+}
+
+export default function SessionPage({ params }: { params: { sessionId: string } }) {
+	// const imagePaths = await getTeamMaterials(params.sessionId)
 
 	return (
 		<RoomProvider id={params.sessionId} initialPresence={{}} initialStorage={{
-			comments: new LiveList([])
+			comments: new LiveList<LiveObject<{ author: string, message: string }>>([]),
 		}}>
-			<div className={mainStyle}>
-				<DisplayImage imagePaths={[]} imageHeight={990} />
-			</div>
-
-			<ClientSideSuspense fallback={<p>Loading...</p>}>
-				{() => <LiveChat />}
-			</ClientSideSuspense>
+			{/* <div className={mainStyle}>
+				<DisplayImage imagePaths={imagePaths} imageHeight={990} />
+			</div> */}
+			<LiveChat />
 		</RoomProvider >
 	)
 }
