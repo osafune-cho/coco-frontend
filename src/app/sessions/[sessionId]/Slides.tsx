@@ -1,10 +1,11 @@
 "use client"
 
 import React from "react"
-import { useMyPresence, useOthers } from "../../../../liveblocks.config"
+import { useMyPresence, useOthers, useUpdateMyPresence } from "../../../../liveblocks.config"
 import { Material } from "./page"
 import { css } from "../../../../styled-system/css"
 import { useInView } from "react-intersection-observer"
+import { Slide } from "./Slide"
 
 const imagesStyle = css({
   width: "full",
@@ -17,20 +18,13 @@ const imagesStyle = css({
 })
 
 export const Slides: React.FC<{ materials: Material[] }> = ({ materials }) => {
-  const others = useOthers()
 
   return (
     <div className={imagesStyle}>
       {materials.map((material, idx) => {
-        return (<img key={idx} id={`slide-${idx}`} src={material.url} className={
-          css({
-            width: "full",
-            maxWidth: "800px",
-            border: "solid",
-            borderColor: "orange.400",
-            borderWidth: others.some(other => other.presence.currentPageIndex == idx) ? "4px" : "0px",
-          })
-        } />)
+        return (
+          <Slide key={idx} idx={idx} url={material.url} />
+        )
       })}
     </div>
   )
