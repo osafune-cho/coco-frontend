@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { css } from "../../../../styled-system/css";
 import { useRouter } from "next/navigation";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export default function CreateNewSessionPage() {
   const { register: registerCourseCodeForm, handleSubmit: handleCourseCodeFormSubmit, formState: { errors: courseCodeFormErrors, isSubmitting: isSubmittingCourseCodeForm }, setError: setCourseCodeFormError } = useForm<{ courseCode: string }>();
@@ -60,109 +62,125 @@ export default function CreateNewSessionPage() {
 
   return (
     <main className={css({
-      maxWidth: "600px",
-      marginInline: "auto",
-      py: "20px",
-      display: "grid",
-      gap: "20px",
+      background: "#e0e2dc",
+      minHeight: "100vh",
     })}>
-      <div className={css({ p: "20px", border: "1px solid", borderColor: "gray.200", rounded: "lg" })}>
-        <div className={css({ display: "grid", justifyContent: "center", gap: "4px" })}>
-          <h1 className={css({
-            fontSize: "lg"
-          })}>講義コードを入力してください</h1>
-        </div>
-        <form onSubmit={handleCourseCodeFormSubmit(getCourse)} className={css({
-          display: "grid",
-          gap: "16px",
-        })}>
-          <input placeholder="講義コード" {...registerCourseCodeForm("courseCode", { required: true })} className={css({
-            border: "1px solid",
-            borderColor: "gray.200",
-            p: "4px",
-            rounded: "md",
-          })} />
-          <button
-            disabled={isSubmittingCourseCodeForm}
-            className={css({
-              background: "brand.500",
-              rounded: "full",
-              w: "full",
-              py: "4px",
-              px: "12px",
-              color: "white",
-            })}
-          >{isSubmittingCourseCodeForm ? "Loading..." : "次へ"}</button>
-
-        </form>
-        {courseCodeFormErrors.courseCode && (<p className={css({ color: "red.500" })}>{courseCodeFormErrors.courseCode?.message}</p>)}
-      </div>
-
-      {course && (
-        <>
-          <div className={css({
-            border: "1px solid",
-            borderColor: "gray.200",
-            background: "gray.100",
-            p: "20px",
-            rounded: "lg",
-          })}>
-            <p className={css({
-              fontSize: "xl",
-              fontWeight: "bold",
-            })}>{course.name}</p>
-            <p>{course.instructors}</p>
+      <Header />
+      <div className={css({
+        marginTop: "100px",
+        maxWidth: "600px",
+        py: "20px",
+        gap: "20px",
+        background: "white",
+        padding: "20px",
+        rounded: "lg",
+        margin: "5% auto",
+      })}>
+        <div className={css({ p: "20px", background: "#fff", border: "1px solid", borderColor: "gray.200", rounded: "lg" })}>
+          <div className={css({ display: "grid", justifyContent: "center", gap: "4px" })}>
+            <h1 className={css({
+              fontSize: "lg"
+            })}>講義コードを入力してください</h1>
           </div>
-
-          <form
-            onSubmit={handleCreateSessionForm(createSession)}
-            className={css({
-              display: "grid",
-              gap: "16px",
-              p: "20px",
-              rounded: "lg",
+          <form onSubmit={handleCourseCodeFormSubmit(getCourse)} className={css({
+            display: "grid",
+            gap: "16px",
+          })}>
+            <input placeholder="講義コード" {...registerCourseCodeForm("courseCode", { required: true })} className={css({
               border: "1px solid",
               borderColor: "gray.200",
+              p: "4px",
+              rounded: "md",
+            })} />
+            <button
+              disabled={isSubmittingCourseCodeForm}
+              className={css({
+                background: "#74a300",
+                _hover: {
+                  background: "#5b8000"
+                },
+                rounded: "full",
+                w: "full",
+                py: "4px",
+                px: "12px",
+                color: "white",
+              })}
+            >{isSubmittingCourseCodeForm ? "Loading..." : "次へ"}</button>
+
+          </form>
+          {courseCodeFormErrors.courseCode && (<p className={css({ color: "red.500" })}>{courseCodeFormErrors.courseCode?.message}</p>)}
+        </div>
+
+        {course && (
+          <>
+            <div className={css({
+              border: "1px solid",
+              borderColor: "gray.200",
+              background: "gray.100",
+              p: "20px",
+              rounded: "lg",
             })}>
-            <div>
+              <p className={css({
+                fontSize: "xl",
+                fontWeight: "bold",
+              })}>{course.name}</p>
+              <p>{course.instructors}</p>
+            </div>
+
+            <form
+              onSubmit={handleCreateSessionForm(createSession)}
+              className={css({
+                display: "grid",
+                gap: "16px",
+                p: "20px",
+                rounded: "lg",
+                border: "1px solid",
+                borderColor: "gray.200",
+              })}>
+              <div>
+                <div className={css({
+                  display: "flex",
+                  justifyContent: "space-between",
+                })}>
+                  <label>セッション名</label>
+                  <input {...registerCreateSessionForm("name", { required: true })} className={css({
+                    py: "2px",
+                    px: "6px",
+                    rounded: "sm",
+                    border: "1px solid",
+                    borderColor: "gray.200",
+                  })} />
+                </div>
+              </div>
               <div className={css({
                 display: "flex",
                 justifyContent: "space-between",
               })}>
-                <label>セッション名</label>
-                <input {...registerCreateSessionForm("name", { required: true })} className={css({
-                  py: "2px",
-                  px: "6px",
-                  rounded: "sm",
-                  border: "1px solid",
-                  borderColor: "gray.200",
-                })} />
+                <label>ファイル</label>
+                <input type="file" accept="application/pdf" {...registerCreateSessionForm("files", { required: true })} />
               </div>
-            </div>
-            <div className={css({
-              display: "flex",
-              justifyContent: "space-between",
-            })}>
-              <label>ファイル</label>
-              <input type="file" accept="application/pdf" {...registerCreateSessionForm("files", { required: true })} />
-            </div>
-            <button
-              disabled={isSubmittingCreateSessionForm}
-              className={css({
-                py: "8px",
-                px: "16px",
-                display: "block",
-                textAlign: "center",
-                w: "full",
-                rounded: "full",
-                background: "brand.500",
-                cursor: "pointer",
-                color: "white",
-              })}>{isSubmittingCreateSessionForm ? "Loading..." : "作成"}</button>
-          </form>
-        </>
-      )
-      }
+              <button
+                disabled={isSubmittingCreateSessionForm}
+                className={css({
+                  background: "#74a300",
+                  _hover: {
+                    background: "#5b8000"
+                  },
+                  py: "8px",
+                  px: "16px",
+                  display: "block",
+                  textAlign: "center",
+                  w: "full",
+                  rounded: "full",
+                  cursor: "pointer",
+                  color: "white",
+                })}>{isSubmittingCreateSessionForm ? "Loading..." : "作成"}</button>
+            </form>
+          </>
+        )
+        }
+      </div>
+      <Footer />
     </main>
   )
 }
