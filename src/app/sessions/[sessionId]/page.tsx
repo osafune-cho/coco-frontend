@@ -1,10 +1,7 @@
-"use client"
-
 import { css } from "../../../../styled-system/css"
-import { LiveList, LiveObject } from "@liveblocks/client"
-import { RoomProvider } from "../../../../liveblocks.config"
 import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
+import { Room } from "./Room"
 
 const mainStyle = css({
 	background: "#5C5C5C",
@@ -32,17 +29,15 @@ const getTeamMaterials = async (teamId: string): Promise<string[]> => {
 	return materials
 }
 
-export default function SessionPage({ params }: { params: { sessionId: string } }) {
-	// const imagePaths = await getTeamMaterials(params.sessionId)
+export default async function SessionPage({ params }: { params: { sessionId: string } }) {
+	const imagePaths = await getTeamMaterials(params.sessionId)
 
 	return (
-		<RoomProvider id={params.sessionId} initialPresence={{}} initialStorage={{
-			comments: new LiveList<LiveObject<{ author: string, message: string }>>([]),
-		}}>
-			{/* <div className={mainStyle}>
+		<Room roomId={params.sessionId}>
+			<div className={mainStyle}>
 				<DisplayImage imagePaths={imagePaths} imageHeight={990} />
-			</div> */}
+			</div>
 			<LiveChat />
-		</RoomProvider >
+		</Room>
 	)
 }
