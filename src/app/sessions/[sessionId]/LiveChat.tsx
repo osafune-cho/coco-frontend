@@ -9,6 +9,8 @@ import { css } from "../../../../styled-system/css";
 import { useState } from "react";
 import { gsap } from "gsap"
 import TextareaAutosize from 'react-textarea-autosize';
+import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
+import toast, { Toaster } from "react-hot-toast"
 
 export const LiveChat = () => {
   return (
@@ -19,6 +21,7 @@ export const LiveChat = () => {
 }
 
 const LiveChatBody = () => {
+  const [_, copy] = useCopyToClipboard()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const comments = useStorage((root) => root.comments);
   const { register, handleSubmit, reset, formState: { isValid } } = useForm<{ name: string, message: string }>()
@@ -33,18 +36,20 @@ const LiveChatBody = () => {
     []
   )
 
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => {
+      gsap.to(".menu", {
+        x: prev ? 0 : -300,
+      })
+
+      return !prev
+    })
+  }
+
   return (
     <>
       <button
-        onClick={() => {
-          setIsMenuOpen(prev => {
-            gsap.to(".menu", {
-              x: prev ? 0 : -300,
-            })
-
-            return !prev
-          })
-        }}
+        onClick={toggleMenu}
         className={`menu ${css({
           cursor: "pointer",
           position: "fixed",
@@ -57,7 +62,30 @@ const LiveChatBody = () => {
           background: "brand.500",
           display: "grid",
           placeContent: "center",
+          zIndex: 300,
         })}`}>← Live Chat</button>
+
+      <button
+        onClick={async () => {
+          await copy(`${window.location.href}`)
+          toast.success("URL をコピーしました！")
+        }}
+        className={`menu ${css({
+          cursor: "pointer",
+          position: "fixed",
+          top: "90px",
+          right: 0,
+          padding: "20px",
+          // width: "40px",
+          height: "40px",
+          color: "white",
+          background: "orange.400",
+          display: "grid",
+          placeContent: "center",
+          zIndex: 300,
+        })}`}>
+        Share
+      </button >
 
       <div className={`menu ${css({
         position: "fixed",
@@ -133,6 +161,7 @@ const LiveChatBody = () => {
           >Post</button>
         </form>
       </div >
+      <Toaster />
     </>
   )
 }

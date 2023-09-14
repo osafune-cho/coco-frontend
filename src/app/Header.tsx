@@ -8,14 +8,16 @@ const Quicksand700 = Quicksand({
 })
 
 const headerStyle = css({
-  background: "#dcdcdc",
-  // position: "fixed",
+  bottom: "20px",
+  left: "20px",
+  position: "fixed",
+  zIndex: 200,
   width: "100%",
 })
 
 const logoStyle = css({
-  fontSize: "4xl",
-  marginLeft: "20px",
+  fontSize: "2xl",
+  alignItems: "center",
 })
 
 export const Header = () => {
