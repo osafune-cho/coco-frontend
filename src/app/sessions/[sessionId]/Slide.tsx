@@ -17,21 +17,47 @@ export const Slide: React.FC<{ idx: number, url: string }> = ({ idx, url }) => {
     }
   })
 
+  const othersOnThisSlide = others.filter(other => other.presence.currentPageIndex === idx)
+
   return (
-    <img
-      id={`slide-${idx}`}
-      ref={ref}
-      src={url}
-      className={
-        css({
-          width: "full",
-          maxWidth: "800px",
-        })
-      }
-      style={{
-        borderColor: others.find(other => other.presence.currentPageIndex == idx)?.presence.color,
-        border: "solid",
-        borderWidth: others.some(other => other.presence.currentPageIndex == idx) ? "4px" : "0px",
-      }}
-    />)
+    <div className={css({
+      display: "grid",
+      gridTemplateColumns: "12px 1fr",
+      gap: "8px",
+    })}>
+      <div className={css({
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px",
+      })}>
+        {othersOnThisSlide.map((other) =>
+          <div
+            className={css({
+              width: "12px",
+              height: "12px",
+              rounded: "full",
+            })}
+            style={{ background: other.presence.color }}
+          >
+
+          </div>
+        )}</div>
+      <img
+        id={`slide-${idx}`}
+        ref={ref}
+        src={url}
+        className={
+          css({
+            width: "full",
+            maxWidth: "800px",
+          })
+        }
+        style={{
+          borderColor: others.find(other => other.presence.currentPageIndex == idx)?.presence.color,
+          border: "solid",
+          borderWidth: others.some(other => other.presence.currentPageIndex == idx) ? "4px" : "0px",
+        }}
+      />
+    </div>
+  )
 }
