@@ -30,28 +30,36 @@ type Team = {
 	updatedAt: string
 }
 
+type Material = {
+	id: string;
+	teamId: string;
+	url: string;
+	height: number;
+	width: number;
+}
+
 const getTeam = async (teamId: string): Promise<Team> => {
 	const team: Team = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}`).then(res => res.json())
 
 	return team
 }
 
-const getTeamMaterials = async (teamId: string): Promise<string[]> => {
-	const materials: string[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
+const getTeamMaterials = async (teamId: string): Promise<Material[]> => {
+	const materials: Material[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
 
 	return materials
 }
 
 export default async function SessionPage({ params }: { params: { sessionId: string } }) {
-	const imagePaths = await getTeamMaterials(params.sessionId)
+	const materials = await getTeamMaterials(params.sessionId)
 
 	return (
 		<Room roomId={params.sessionId}>
 			<main className={mainStyle}>
 				<div className={imagesStyle}>
 					{/* <DisplayImage imagePaths={imagePaths} imageHeight={990} /> */}
-					{imagePaths.map((path, idx) => {
-						return (<img key={idx} src={path} className={imageStyle} />)
+					{materials.map((material, idx) => {
+						return (<img key={idx} src={material.url} className={imageStyle} />)
 					})}
 				</div>
 				<LiveChat />
