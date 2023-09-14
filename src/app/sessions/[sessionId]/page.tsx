@@ -8,6 +8,7 @@ import { ClientSideSuspense } from "@liveblocks/react"
 import { RoomProvider } from "../../../../liveblocks.config"
 import { LiveObject } from "@liveblocks/client";
 import { useMutation, useStorage } from "../../../../liveblocks.config"
+import { useForm } from "react-hook-form"
 
 const Quicksand700 = Quicksand({
 	weight: '700',
@@ -53,6 +54,7 @@ export default function Home({ params }: { params: { sessionId: string } }) {
 
 const Contents = () => {
 	const comments = useStorage((root) => root.comments);
+	const { register, handleSubmit, reset } = useForm<{ name: string, message: string }>()
 
 	const createNewComment = useMutation(
 		({ storage }, author, message) => {
@@ -65,26 +67,38 @@ const Contents = () => {
 	)
 
 	return (
-		<div className={mainStyle}>
-			<header className={headerStyle}>
-				<NextLink href="/">
-					<div className={logoStyle}>
-						<h1 className={Quicksand700.className}>CO-CO</h1>
-					</div>
-				</NextLink>
-			</header>
+		<>
+			<div className={mainStyle}>
+				<header className={headerStyle}>
+					<NextLink href="/">
+						<div className={logoStyle}>
+							<h1 className={Quicksand700.className}>CO-CO</h1>
+						</div>
+					</NextLink>
+				</header>
 
-			{
-				comments.map((comment, idx) => {
-					return (
-						<p key={idx}>
-							{comment.message}
-						</p>
-					)
-				})
-			}
-
-			<button onClick={() => { createNewComment("shina", "hello") }}>Post</button>
-		</div >
+			</div >
+			<div>
+				<div>
+					{
+						comments.map((comment, idx) => {
+							return (
+								<p key={idx}>
+									{comment.message}
+								</p>
+							)
+						})
+					}
+				</div>
+			</div>
+			<form onSubmit={handleSubmit((data) => {
+				createNewComment(data.name, data.message)
+				reset()
+			})}>
+				<input hidden value={"User"} {...register("name")} />
+				<input {...register("message")} />
+				<button type="submit">Post</button>
+			</form>
+		</>
 	)
 }
