@@ -12,7 +12,6 @@ const headerStyle = css({
   left: "20px",
   position: "fixed",
   zIndex: 200,
-  width: "100%",
 })
 
 const logoStyle = css({
