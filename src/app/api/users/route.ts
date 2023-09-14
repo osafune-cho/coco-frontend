@@ -13,8 +13,15 @@ export async function GET(request: NextRequest) {
     return new NextResponse("Missing or invalid userId", { status: 400 });
   }
 
+  // const userIndex = Number(userId.replace(/^\D+/g, "")) ?? 0;
+
+  // return NextResponse.json({
+  //   name: NAMES[userIndex],
+  //   avatar: `https://liveblocks.io/avatars/avatar-${userIndex}.png`,
+  // });
+
   return NextResponse.json({
-    name: "Ringo Shina",
+    name: "Ringo",
     avatar: `https://liveblocks.io/avatars/avatar-1.png`,
   });
 }
