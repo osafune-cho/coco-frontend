@@ -17,6 +17,7 @@ const headerStyle = css({
   height: "75px",
   display: "flex",
   boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)",
+
 })
 
 const logoStyle = css({
@@ -25,13 +26,29 @@ const logoStyle = css({
   width: "auto",
 })
 
+const linkStyle = css({
+  marginLeft: "auto",
+  marginRight: "20px",
+  marginTop: "auto",
+  marginBottom: "auto",
+  fontSize: "20px",
+  color: "#3c5400",
+  textDecoration: "none",
+  "&:hover": {
+    color: "#3c5400",
+    textDecoration: "underline",
+  },
+})
+
 export const Header = () => {
   return (
     <header className={headerStyle}>
       <NextLink href="/">
         <Image className={logoStyle} src={cocologo_type} alt="CO-CO" />
       </NextLink>
-
+      <div className={linkStyle}>
+        <a className={Noto_Sans_JP700.className} href="https://github.com/orgs/osafune-cho/repositories" target="_blank">repository</a>
+      </div>
     </header>
   )
 }
