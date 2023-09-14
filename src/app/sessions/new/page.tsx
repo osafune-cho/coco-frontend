@@ -4,6 +4,7 @@ import { Course } from "@/types/models";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { css } from "../../../../styled-system/css";
+import { useRouter } from "next/navigation";
 
 export default function CreateNewSessionPage() {
   const { register: registerCourseCodeForm, handleSubmit: handleCourseCodeFormSubmit, formState: { errors: courseCodeFormErrors, isSubmitting: isSubmittingCourseCodeForm }, setError: setCourseCodeFormError } = useForm<{ courseCode: string }>();
@@ -12,6 +13,7 @@ export default function CreateNewSessionPage() {
     files: FileList,
   }>();
   const [course, setCourse] = useState<Course | null>(null)
+  const router = useRouter()
 
   const getCourse = async ({ courseCode }: { courseCode: string }) => {
 
@@ -51,7 +53,9 @@ export default function CreateNewSessionPage() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${team.id}/materials`, {
       method: "POST",
       body: formData
-    })
+    }).then(res => res.json())
+
+    router.push(`/sessions/${team.id}`)
   }
 
   return (
