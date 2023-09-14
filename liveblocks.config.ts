@@ -8,7 +8,8 @@ const client = createClient({
 });
 
 type Presense = {
-
+  currentPageIndex: number,
+  isTyping: boolean,
 }
 
 type Storage = {
@@ -16,5 +17,5 @@ type Storage = {
 }
 
 export const {
-  suspense: { RoomProvider, useMutation, useStorage },
+  suspense: { RoomProvider, useMutation, useStorage, useMyPresence, useUpdateMyPresence, useOthers },
 } = createRoomContext<Presense, Storage>(client);
