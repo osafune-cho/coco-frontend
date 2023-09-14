@@ -63,7 +63,7 @@ const LiveChatBody = () => {
           display: "grid",
           placeContent: "center",
           zIndex: 300,
-        })}`}>← Live Chat</button>
+        })}`}>{isMenuOpen ? "→" : "←"} Live Chat</button>
 
       <button
         onClick={async () => {
@@ -102,10 +102,18 @@ const LiveChatBody = () => {
         })}>
           <p className={css({
             fontSize: "2xl",
-            fontWeight: "bold"
+            fontWeight: "bold",
+            pb: "20px",
+            color: "gray.700",
           })}>Live Chat</p>
           <div>
             <div>
+              {comments.length <= 0 && (<div className={css({ background: "gray.200", rounded: "md", textAlign: "center", p: "20px", display: "grid", gap: "8px" })}>
+                <div className={css({
+                  fontSize: "5xl",
+                })}>🥇</div>
+                <p>コメントがまだありません。一番乗りでコメントをしてみましょう！</p>
+              </div>)}
               {
                 comments.map((comment, idx) => {
                   return (
@@ -126,12 +134,23 @@ const LiveChatBody = () => {
             position: "absolute",
             borderColor: "gray.200",
             bottom: 0,
+            background: "gray.300",
             width: "100%",
             padding: "4px",
           })}
         >
           <input hidden value={"User"} {...register("name")} />
-          <TextareaAutosize {...register("message", { required: true })}
+          <TextareaAutosize
+            onKeyDown={(e) => {
+              if (e.shiftKey && e.key === "Enter") {
+                handleSubmit((data) => {
+                  createNewComment(data.name, data.message)
+                  reset()
+                })()
+              }
+            }}
+
+            {...register("message", { required: true })}
             minRows={3}
             className={css({
               w: "full",
@@ -146,6 +165,9 @@ const LiveChatBody = () => {
             type="submit"
             className={css({
               background: "brand.500",
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
               rounded: "md",
               color: "white",
               py: "2px",
@@ -158,7 +180,29 @@ const LiveChatBody = () => {
               }
             })}
             disabled={!isValid}
-          >Post</button>
+          >
+            投稿
+
+            <span className={css({
+              fontSize: "2xs",
+              display: "flex",
+              gap: "2px"
+            })}>
+              <span className={css({
+                border: "1px solid",
+                borderColor: "gray.200",
+                px: "2px",
+                rounded: "sm",
+              })}>Shift</span>
+              <p>+</p>
+              <span className={css({
+                border: "1px solid",
+                borderColor: "gray.200",
+                px: "2px",
+                rounded: "sm",
+              })}>Enter</span>
+            </span>
+          </button>
         </form>
       </div >
       <Toaster />
