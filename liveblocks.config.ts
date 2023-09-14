@@ -12,7 +12,7 @@ type Presense = {
 }
 
 type Storage = {
-  comments: LiveList<LiveObject<{ message: string }>>,
+  comments: LiveList<LiveObject<{ author: string, message: string }>>,
 }
 
 export const {

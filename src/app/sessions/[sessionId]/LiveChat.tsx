@@ -4,8 +4,17 @@ import { useForm } from "react-hook-form";
 import { useMutation, useStorage } from "../../../../liveblocks.config";
 import { LiveObject } from "@liveblocks/client";
 import { Comment } from "./Comment";
+import { ClientSideSuspense } from "@liveblocks/react";
 
 export const LiveChat = () => {
+  return (
+    <ClientSideSuspense fallback={<p>Loading...</p>}>
+      {() => <LiveChatBody />}
+    </ClientSideSuspense>
+  )
+}
+
+const LiveChatBody = () => {
   const comments = useStorage((root) => root.comments);
   const { register, handleSubmit, reset } = useForm<{ name: string, message: string }>()
 
