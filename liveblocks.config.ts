@@ -8,13 +8,15 @@ const client = createClient({
 });
 
 type Presense = {
-
+  currentPageIndex: number,
+  isTyping: boolean,
+  color: string,
 }
 
 type Storage = {
-  comments: LiveList<LiveObject<{ author: string, message: string }>>,
+  comments: LiveList<LiveObject<{ author: string, message: string, color: string }>>,
 }
 
 export const {
-  suspense: { RoomProvider, useMutation, useStorage },
+  suspense: { RoomProvider, useMutation, useStorage, useMyPresence, useUpdateMyPresence, useOthers },
 } = createRoomContext<Presense, Storage>(client);

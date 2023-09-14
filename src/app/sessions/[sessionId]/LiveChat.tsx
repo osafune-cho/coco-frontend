@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form";
-import { useMutation, useStorage } from "../../../../liveblocks.config";
+import { useMutation, useMyPresence, useOthers, useStorage, useUpdateMyPresence } from "../../../../liveblocks.config";
 import { LiveObject } from "@liveblocks/client";
 import { Comment } from "./Comment";
 import { ClientSideSuspense } from "@liveblocks/react";
@@ -23,14 +23,18 @@ export const LiveChat = () => {
 const LiveChatBody = () => {
   const [_, copy] = useCopyToClipboard()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [presense] = useMyPresence()
+  const others = useOthers()
+  const updateMyPresense = useUpdateMyPresence()
   const comments = useStorage((root) => root.comments);
-  const { register, handleSubmit, reset, formState: { isValid } } = useForm<{ name: string, message: string }>()
+  const { register, handleSubmit, reset, formState: { isValid }, } = useForm<{ name: string, message: string }>()
 
   const createNewComment = useMutation(
     ({ storage }, author, message) => {
       storage.get("comments").push(new LiveObject({
         author,
-        message
+        message,
+        color: presense.color,
       }))
     },
     []
@@ -100,12 +104,30 @@ const LiveChatBody = () => {
         <div className={css({
           padding: "20px",
         })}>
-          <p className={css({
-            fontSize: "2xl",
-            fontWeight: "bold",
-            pb: "20px",
-            color: "gray.700",
-          })}>Live Chat</p>
+          <div
+            className={css({
+              pb: "20px",
+              color: "gray.700",
+              display: "flex",
+              gap: "12px",
+              alignItems: "center",
+            })}
+          >
+            <p className={css({
+              fontSize: "2xl",
+              fontWeight: "bold",
+            })}>Live Chat</p>
+            <span className={css({
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: "gray.200",
+              rounded: "full",
+              display: "inline-block",
+              px: "6px",
+            })}>
+              <span className={css({ color: "red.500" })}>⚫</span>{others.length}
+            </span>
+          </div>
           <div>
             <div>
               {comments.length <= 0 && (<div className={css({ background: "gray.200", rounded: "md", textAlign: "center", p: "20px", display: "grid", gap: "8px" })}>
@@ -139,8 +161,18 @@ const LiveChatBody = () => {
             padding: "4px",
           })}
         >
-          <input hidden value={"User"} {...register("name")} />
+          {
+            others.filter((other) => other.presence.isTyping).length > 0 && (
+              <p className={css({ fontSize: "xs", py: "4px" })}>{others.filter((other) => other.presence.isTyping).length}人が入力中...</p>)
+          }
+          < input hidden value={"User"} {...register("name")} />
           <TextareaAutosize
+            onFocus={() => {
+              updateMyPresense({ isTyping: true })
+            }}
+            // onBlur={() => {
+            //   updateMyPresense({ isTyping: false })
+            // }}
             onKeyDown={(e) => {
               if (e.shiftKey && e.key === "Enter") {
                 e.preventDefault()
@@ -151,7 +183,11 @@ const LiveChatBody = () => {
               }
             }}
 
-            {...register("message", { required: true })}
+            {...register("message", {
+              required: true, onBlur: () => {
+                updateMyPresense({ isTyping: false })
+              }
+            })}
             minRows={3}
             className={css({
               w: "full",

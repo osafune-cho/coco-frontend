@@ -1,25 +1,12 @@
+import { useMyPresence } from "../../../../liveblocks.config"
 import { css } from "../../../../styled-system/css"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
+import { Slides } from "./Slides"
 
 const mainStyle = css({
 	display: "grid",
 	// gridTemplateColumns: "7fr 3fr",
-})
-
-const imagesStyle = css({
-	width: "full",
-	minHeight: "100svh",
-	background: "#5c5c5c",
-	display: "grid",
-	gap: "20px",
-	padding: "20px",
-	justifyContent: "center",
-})
-
-const imageStyle = css({
-	width: "full",
-	maxWidth: "800px",
 })
 
 type Team = {
@@ -30,7 +17,7 @@ type Team = {
 	updatedAt: string
 }
 
-type Material = {
+export type Material = {
 	id: string;
 	teamId: string;
 	url: string;
@@ -56,14 +43,10 @@ export default async function SessionPage({ params }: { params: { sessionId: str
 	return (
 		<Room roomId={params.sessionId}>
 			<main className={mainStyle}>
-				<div className={imagesStyle}>
-					{/* <DisplayImage imagePaths={imagePaths} imageHeight={990} /> */}
-					{materials.map((material, idx) => {
-						return (<img key={idx} src={material.url} className={imageStyle} />)
-					})}
-				</div>
+				{/* <DisplayImage imagePaths={imagePaths} imageHeight={990} /> */}
+				<Slides materials={materials} />
 				<LiveChat />
 			</main>
-		</Room>
+		</Room >
 	)
 }
