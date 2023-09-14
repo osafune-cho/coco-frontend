@@ -12,9 +12,9 @@ const imageStyle = css({
 
 type DisplayImageProps = {
 	imagePaths: string[];
-  };
+};
 
-export const DisplayImage = ( { imagePaths }: DisplayImageProps ) => {
+export const DisplayImage = ({ imagePaths }: DisplayImageProps) => {
 	return (
 		<div >
 			{imagePaths.map((imagePath, i) => (

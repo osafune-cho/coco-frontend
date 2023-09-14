@@ -1,38 +1,24 @@
 "use client";
 
-import { createClient } from "@liveblocks/client";
+import { LiveList, createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
 export const client = createClient({
-  authEndpoint: "/api/liveblocks-auth",
+  // authEndpoint: "/api/liveblocks-auth",
+  publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY!,
 });
+
+type Presense = {
+
+}
+
+type Storage = {
+  comments: LiveList<string>,
+}
 
 const {
-  suspense: { RoomProvider, useThreads },
-} = createRoomContext(client, {
-  // Get the current user's info from their ID
-  resolveUser: async ({ userId }: { userId: string }) => {
-    try {
-      const response = await fetch(`/api/users?userId=${userId}`);
+  // suspense: { RoomProvider, useMutation },
+  RoomProvider, useMutation, useStorage
+} = createRoomContext<Presense, Storage>(client);
 
-      return response.json();
-    } catch (error) {
-      console.error(123, error);
-    }
-  },
-
-  // Find a list of users that match the current search term
-  // resolveMentionSuggestions: async ({ text }) => {
-  //   try {
-  //     const response = await fetch(`/api/users/search?text=${text}`);
-
-  //     return response.json();
-  //   } catch (error) {
-  //     console.error(456, error);
-
-  //     return [];
-  //   }
-  // },
-});
-
-export { RoomProvider, useThreads };
+export { RoomProvider, useMutation, useStorage };
