@@ -31,14 +31,6 @@ type Team = {
 	updatedAt: string
 }
 
-type Material = {
-	id: string;
-	teamId: string;
-	url: string;
-	height: number;
-	width: number;
-}
-
 const getTeam = async (teamId: string): Promise<Team> => {
 	const team: Team = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}`).then(res => res.json())
 
