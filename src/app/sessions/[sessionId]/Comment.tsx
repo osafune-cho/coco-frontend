@@ -5,13 +5,15 @@ type CommentProps = {
 }
 
 type Comment = {
-  message: string
+  message: string,
+  author: string,
+  color: string
 }
 
 export const Comment: React.FC<CommentProps> = ({ comment }) => {
   return (
     <div>
-      <p>{comment.message}</p>
+      <p style={{ color: comment.color }}>{comment.message}</p>
     </div>
   )
 }

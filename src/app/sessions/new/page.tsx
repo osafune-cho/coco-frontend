@@ -175,12 +175,12 @@ export default function CreateNewSessionPage() {
                   cursor: "pointer",
                   color: "white",
                 })}>{isSubmittingCreateSessionForm ? "Loading..." : "作成"}</button>
-            </form>
+            </form >
           </>
         )
         }
-      </div>
+      </div >
       <Footer />
-    </main>
+    </main >
   )
 }

@@ -1,14 +1,12 @@
 import { css } from "../../../../styled-system/css"
-import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
-import { Header } from "@/components/Header"
+import { Slides } from "./Slides"
 
 const mainStyle = css({
-	background: "#5C5C5C",
+	display: "grid",
+	// gridTemplateColumns: "7fr 3fr",
 })
-
-// const imagePaths = getImageSlugs()
 
 type Team = {
 	id: string,
@@ -18,28 +16,36 @@ type Team = {
 	updatedAt: string
 }
 
+export type Material = {
+	id: string;
+	teamId: string;
+	url: string;
+	height: number;
+	width: number;
+}
+
 const getTeam = async (teamId: string): Promise<Team> => {
 	const team: Team = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}`).then(res => res.json())
 
 	return team
 }
 
-const getTeamMaterials = async (teamId: string): Promise<string[]> => {
-	const materials: string[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
+const getTeamMaterials = async (teamId: string): Promise<Material[]> => {
+	const materials: Material[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
 
 	return materials
 }
 
 export default async function SessionPage({ params }: { params: { sessionId: string } }) {
-	const imagePaths = await getTeamMaterials(params.sessionId)
+	const materials = await getTeamMaterials(params.sessionId)
 
 	return (
 		<Room roomId={params.sessionId}>
-			<Header />
-			<div className={mainStyle}>
-				<DisplayImage imagePaths={imagePaths} imageHeight={990} />
-			</div>
-			<LiveChat />
-		</Room>
+			<main className={mainStyle}>
+				{/* <DisplayImage imagePaths={imagePaths} imageHeight={990} /> */}
+				<Slides materials={materials} />
+				<LiveChat />
+			</main>
+		</Room >
 	)
 }
