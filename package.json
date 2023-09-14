@@ -7,7 +7,9 @@
     "prepare": "panda",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@liveblocks/client": "^1.3.1",
@@ -30,7 +32,17 @@
   },
   "devDependencies": {
     "@pandacss/dev": "^0.14.0",
+    "@storybook/addon-essentials": "^7.4.1",
+    "@storybook/addon-interactions": "^7.4.1",
+    "@storybook/addon-links": "^7.4.1",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.4.1",
+    "@storybook/nextjs": "^7.4.1",
+    "@storybook/react": "^7.4.1",
+    "@storybook/testing-library": "^0.2.0",
     "@types/uuid": "^9.0.3",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "eslint-plugin-storybook": "^0.6.13",
+    "storybook": "^7.4.1"
   }
 }
