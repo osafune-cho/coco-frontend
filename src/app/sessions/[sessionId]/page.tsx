@@ -1,14 +1,27 @@
 import { css } from "../../../../styled-system/css"
-import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
 import { Material } from "@/types/models"
 
 const mainStyle = css({
-	background: "#5C5C5C",
+	display: "grid",
+	// gridTemplateColumns: "7fr 3fr",
 })
 
-// const imagePaths = getImageSlugs()
+const imagesStyle = css({
+	width: "full",
+	minHeight: "100svh",
+	background: "#5c5c5c",
+	display: "grid",
+	gap: "20px",
+	padding: "20px",
+	justifyContent: "center",
+})
+
+const imageStyle = css({
+	width: "full",
+	maxWidth: "800px",
+})
 
 type Team = {
 	id: string,
@@ -16,6 +29,14 @@ type Team = {
 	courseId: string,
 	createdAt: string,
 	updatedAt: string
+}
+
+type Material = {
+	id: string;
+	teamId: string;
+	url: string;
+	height: number;
+	width: number;
 }
 
 const getTeam = async (teamId: string): Promise<Team> => {
@@ -35,10 +56,15 @@ export default async function SessionPage({ params }: { params: { sessionId: str
 
 	return (
 		<Room roomId={params.sessionId}>
-			<div className={mainStyle}>
-				<DisplayImage materials={materials} />
-			</div>
-			<LiveChat />
+			<main className={mainStyle}>
+				<div className={imagesStyle}>
+					{/* <DisplayImage imagePaths={imagePaths} imageHeight={990} /> */}
+					{materials.map((material, idx) => {
+						return (<img key={idx} src={material.url} className={imageStyle} />)
+					})}
+				</div>
+				<LiveChat />
+			</main>
 		</Room>
 	)
 }

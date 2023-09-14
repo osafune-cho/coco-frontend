@@ -1,4 +1,3 @@
-"use client";
 import { css } from "../../styled-system/css"
 import React, { useEffect, useRef } from "react";
 import { Material } from "@/types/models";
@@ -10,6 +9,7 @@ const imageStyle = css({
 	alignItems: "center",
 	width: "700px",
 })
+
 /**
  * 配列の全てのパスに対し、Image コンポーネントを返す
  */
