@@ -2,6 +2,7 @@ import { css } from "../../../../styled-system/css"
 import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
+import { Header } from "@/components/Header"
 
 const mainStyle = css({
 	background: "#5C5C5C",
@@ -34,6 +35,7 @@ export default async function SessionPage({ params }: { params: { sessionId: str
 
 	return (
 		<Room roomId={params.sessionId}>
+			<Header />
 			<div className={mainStyle}>
 				<DisplayImage imagePaths={imagePaths} imageHeight={990} />
 			</div>
