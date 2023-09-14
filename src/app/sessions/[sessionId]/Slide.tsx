@@ -53,9 +53,9 @@ export const Slide: React.FC<{ idx: number, url: string }> = ({ idx, url }) => {
           })
         }
         style={{
-          borderColor: others.find(other => other.presence.currentPageIndex == idx)?.presence.color,
+          borderColor: othersOnThisSlide?.at(0)?.presence?.color ?? "none",
           border: "solid",
-          borderWidth: others.some(other => other.presence.currentPageIndex == idx) ? "4px" : "0px",
+          borderWidth: othersOnThisSlide.length > 0 ? "4px" : "0px",
         }}
       />
     </div>
