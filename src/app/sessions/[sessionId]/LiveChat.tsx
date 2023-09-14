@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form";
-import { useMutation, useOthers, useStorage, useUpdateMyPresence } from "../../../../liveblocks.config";
+import { useMutation, useMyPresence, useOthers, useStorage, useUpdateMyPresence } from "../../../../liveblocks.config";
 import { LiveObject } from "@liveblocks/client";
 import { Comment } from "./Comment";
 import { ClientSideSuspense } from "@liveblocks/react";
@@ -23,6 +23,7 @@ export const LiveChat = () => {
 const LiveChatBody = () => {
   const [_, copy] = useCopyToClipboard()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [presense] = useMyPresence()
   const others = useOthers()
   const updateMyPresense = useUpdateMyPresence()
   const comments = useStorage((root) => root.comments);
@@ -32,7 +33,8 @@ const LiveChatBody = () => {
     ({ storage }, author, message) => {
       storage.get("comments").push(new LiveObject({
         author,
-        message
+        message,
+        color: presense.color,
       }))
     },
     []

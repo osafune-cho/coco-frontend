@@ -4,6 +4,7 @@ import React from "react"
 import { useMyPresence, useOthers } from "../../../../liveblocks.config"
 import { Material } from "./page"
 import { css } from "../../../../styled-system/css"
+import { useInView } from "react-intersection-observer"
 
 const imagesStyle = css({
   width: "full",
@@ -16,7 +17,6 @@ const imagesStyle = css({
 })
 
 export const Slides: React.FC<{ materials: Material[] }> = ({ materials }) => {
-  const presense = useMyPresence()
   const others = useOthers()
 
   return (
