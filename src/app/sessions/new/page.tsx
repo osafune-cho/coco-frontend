@@ -9,7 +9,7 @@ export default function CreateNewSessionPage() {
   const { register: registerCourseCodeForm, handleSubmit: handleCourseCodeFormSubmit, formState: { errors: courseCodeFormErrors }, setError: setCourseCodeFormError } = useForm<{ courseCode: string }>();
   const { register: registerCreateSessionForm, handleSubmit: handleCreateSessionForm, formState: { errors: createSessionFormErrors }, setError: setCreateSessionFormError } = useForm<{
     name: string,
-    file: File,
+    files: FileList,
   }>();
   const [course, setCourse] = useState<Course | null>(null)
 
@@ -30,7 +30,7 @@ export default function CreateNewSessionPage() {
     })
   }
 
-  const createSession = async ({ name, file }: { file: File, name: string }) => {
+  const createSession = async ({ name, files }: { files: FileList, name: string }) => {
     const team: {
       id: string,
       name: string,
@@ -46,7 +46,7 @@ export default function CreateNewSessionPage() {
     }).then(res => res.json())
 
     const formData = new FormData()
-    formData.append("file", file)
+    formData.append("pdf", files[0])
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${team.id}/materials`, {
       method: "POST",
@@ -137,7 +137,7 @@ export default function CreateNewSessionPage() {
               justifyContent: "space-between",
             })}>
               <label>ファイル</label>
-              <input type="file" {...registerCreateSessionForm("file", { required: true })} />
+              <input type="file" accept="application/pdf" {...registerCreateSessionForm("files", { required: true })} />
             </div>
             <button
               className={css({
