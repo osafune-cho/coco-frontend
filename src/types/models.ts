@@ -1,4 +1,3 @@
-
 export type Course = {
   code: string,
   name: string,
@@ -12,4 +11,12 @@ export type Course = {
   overview: string,
   remarks: string,
   updated_at: string
+}
+
+export type Material = {
+	id: string;
+	teamId: string;
+	url: string;
+	height: number;
+	width: number;
 }

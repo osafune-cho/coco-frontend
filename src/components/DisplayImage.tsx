@@ -1,6 +1,7 @@
 "use client";
 import { css } from "../../styled-system/css"
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import { Material } from "@/types/models";
 
 const imageStyle = css({
 	margin: "20px",
@@ -14,14 +15,12 @@ const imageStyle = css({
  */
 
 type DisplayImageProps = {
-	imagePaths: string[];
-	imageHeight: number;
+	materials: Material[];
 };
 
-export const DisplayImage = ({ imagePaths, imageHeight }: DisplayImageProps) => {
+export const DisplayImage = ({ materials }: DisplayImageProps) => {
 	//canvasを作成
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const yPositionRef = useRef<number>(0);
 
 	//非同期処理
 	useEffect(() => {
@@ -52,28 +51,34 @@ export const DisplayImage = ({ imagePaths, imageHeight }: DisplayImageProps) => 
 		canvas.style.width = rect.width + "px";
 		canvas.style.height = rect.height + "px";
 
+		let yPosition = 20;
+
 		//全ての画像を描画
-		for (const imagePath of imagePaths) {
+		for (const material of materials) {
 			const img = new Image();
-			img.src = imagePath;
+			img.src = material.url;
+
+			const imgHeight = material.height * 700 / material.width;
+			const currentYPosition = yPosition;
 
 			img.addEventListener('load', () => {
-				//アスペクト比を維持したまま、幅を700pxにする
-				const imgHeight = img.height * 700 / img.width;
 				//画像を描画
-				ctx.drawImage(img, 0, yPositionRef.current, 700, imgHeight);
-				//次の画像のy座標を更新
-				yPositionRef.current += imgHeight + 20;
-
+				ctx.drawImage(img, 0, currentYPosition, 700, imgHeight);
 			})
-		}
-	}, [imagePaths])
 
-	const height = (imageHeight + 20) * imagePaths.length;
+			//次の画像のy座標を更新
+			yPosition += imgHeight + 20;
+		}
+	}, [materials])
+
+	let canvasHeight = 20;
+	for (const material of materials) {
+		canvasHeight += material.height * 700 / material.width + 20;
+	}
 
 	return (
 		<div>
-			<canvas className={imageStyle} ref={canvasRef} width={700} height={height} />
+			<canvas className={imageStyle} ref={canvasRef} width={700} height={canvasHeight} />
 		</div>
 	)
 }

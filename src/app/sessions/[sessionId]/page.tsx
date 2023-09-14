@@ -2,6 +2,7 @@ import { css } from "../../../../styled-system/css"
 import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
+import { Material } from "@/types/models"
 
 const mainStyle = css({
 	background: "#5C5C5C",
@@ -23,19 +24,19 @@ const getTeam = async (teamId: string): Promise<Team> => {
 	return team
 }
 
-const getTeamMaterials = async (teamId: string): Promise<string[]> => {
-	const materials: string[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
+const getTeamMaterials = async (teamId: string): Promise<Material[]> => {
+	const materials: Material[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams/${teamId}/materials`).then(res => res.json())
 
 	return materials
 }
 
 export default async function SessionPage({ params }: { params: { sessionId: string } }) {
-	const imagePaths = await getTeamMaterials(params.sessionId)
+	const materials = await getTeamMaterials(params.sessionId)
 
 	return (
 		<Room roomId={params.sessionId}>
 			<div className={mainStyle}>
-				<DisplayImage imagePaths={imagePaths} imageHeight={990} />
+				<DisplayImage materials={materials} />
 			</div>
 			<LiveChat />
 		</Room>
