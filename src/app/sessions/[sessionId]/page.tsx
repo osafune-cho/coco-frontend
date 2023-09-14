@@ -9,6 +9,7 @@ import { RoomProvider } from "../../../../liveblocks.config"
 import { LiveObject } from "@liveblocks/client";
 import { useMutation, useStorage } from "../../../../liveblocks.config"
 import { useForm } from "react-hook-form"
+import { DisplayImage } from "@/components/DisplayImage"
 
 const Quicksand700 = Quicksand({
 	weight: '700',
@@ -76,6 +77,8 @@ const Contents = () => {
 						</div>
 					</NextLink>
 				</header>
+
+				<DisplayImage imagePaths={[]} imageHeight={990} />
 
 			</div >
 			<div>
