@@ -1,13 +1,26 @@
 import { css } from "../../../../styled-system/css"
-import { DisplayImage } from "@/components/DisplayImage"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
 
 const mainStyle = css({
-	background: "#5C5C5C",
+	display: "grid",
+	// gridTemplateColumns: "7fr 3fr",
 })
 
-// const imagePaths = getImageSlugs()
+const imagesStyle = css({
+	width: "full",
+	minHeight: "100svh",
+	background: "#5c5c5c",
+	display: "grid",
+	gap: "20px",
+	padding: "20px",
+	justifyContent: "center",
+})
+
+const imageStyle = css({
+	width: "full",
+	maxWidth: "800px",
+})
 
 type Team = {
 	id: string,
@@ -34,10 +47,15 @@ export default async function SessionPage({ params }: { params: { sessionId: str
 
 	return (
 		<Room roomId={params.sessionId}>
-			<div className={mainStyle}>
-				<DisplayImage imagePaths={imagePaths} imageHeight={990} />
-			</div>
-			<LiveChat />
+			<main className={mainStyle}>
+				<div className={imagesStyle}>
+					{/* <DisplayImage imagePaths={imagePaths} imageHeight={990} /> */}
+					{imagePaths.map((path, idx) => {
+						return (<img key={idx} src={path} className={imageStyle} />)
+					})}
+				</div>
+				<LiveChat />
+			</main>
 		</Room>
 	)
 }
