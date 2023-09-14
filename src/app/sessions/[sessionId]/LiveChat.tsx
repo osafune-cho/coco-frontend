@@ -143,6 +143,7 @@ const LiveChatBody = () => {
           <TextareaAutosize
             onKeyDown={(e) => {
               if (e.shiftKey && e.key === "Enter") {
+                e.preventDefault()
                 handleSubmit((data) => {
                   createNewComment(data.name, data.message)
                   reset()
