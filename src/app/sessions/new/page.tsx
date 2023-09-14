@@ -34,12 +34,14 @@ export default function CreateNewSessionPage() {
     const team: {
       id: string,
       name: string,
+      courseId: string,
       createdAt: string,
       updatedAt: string,
     } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/teams`, {
       method: "POST",
       body: JSON.stringify({
         name,
+        courseId: course!.code,
       })
     }).then(res => res.json())
 
