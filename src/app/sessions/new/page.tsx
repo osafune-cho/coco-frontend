@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { css } from "../../../../styled-system/css";
 
 export default function CreateNewSessionPage() {
-  const { register: registerCourseCodeForm, handleSubmit: handleCourseCodeFormSubmit, formState: { errors: courseCodeFormErrors }, setError: setCourseCodeFormError } = useForm<{ courseCode: string }>();
-  const { register: registerCreateSessionForm, handleSubmit: handleCreateSessionForm, formState: { errors: createSessionFormErrors }, setError: setCreateSessionFormError } = useForm<{
+  const { register: registerCourseCodeForm, handleSubmit: handleCourseCodeFormSubmit, formState: { errors: courseCodeFormErrors, isSubmitting: isSubmittingCourseCodeForm }, setError: setCourseCodeFormError } = useForm<{ courseCode: string }>();
+  const { register: registerCreateSessionForm, handleSubmit: handleCreateSessionForm, formState: { errors: createSessionFormErrors, isSubmitting: isSubmittingCreateSessionForm }, setError: setCreateSessionFormError } = useForm<{
     name: string,
     files: FileList,
   }>();
@@ -78,14 +78,17 @@ export default function CreateNewSessionPage() {
             p: "4px",
             rounded: "md",
           })} />
-          <button className={css({
-            background: "brand.500",
-            rounded: "full",
-            w: "full",
-            py: "4px",
-            px: "12px",
-            color: "white",
-          })}>次へ</button>
+          <button
+            disabled={isSubmittingCourseCodeForm}
+            className={css({
+              background: "brand.500",
+              rounded: "full",
+              w: "full",
+              py: "4px",
+              px: "12px",
+              color: "white",
+            })}
+          >{isSubmittingCourseCodeForm ? "Loading..." : "次へ"}</button>
 
         </form>
         {courseCodeFormErrors.courseCode && (<p className={css({ color: "red.500" })}>{courseCodeFormErrors.courseCode?.message}</p>)}
@@ -140,6 +143,7 @@ export default function CreateNewSessionPage() {
               <input type="file" accept="application/pdf" {...registerCreateSessionForm("files", { required: true })} />
             </div>
             <button
+              disabled={isSubmittingCreateSessionForm}
               className={css({
                 py: "8px",
                 px: "16px",
@@ -150,7 +154,7 @@ export default function CreateNewSessionPage() {
                 background: "brand.500",
                 cursor: "pointer",
                 color: "white",
-              })}>作成</button>
+              })}>{isSubmittingCreateSessionForm ? "Loading..." : "作成"}</button>
           </form>
         </>
       )
