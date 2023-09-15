@@ -70,8 +70,9 @@ export default function CreateNewSessionPage() {
         marginTop: "100px",
         maxWidth: "600px",
         py: "20px",
-        gap: "20px",
-        background: "white",
+        display: "grid",
+        gap: "12px",
+        //background: "white",
         padding: "20px",
         rounded: "lg",
         margin: "5% auto",
@@ -136,6 +137,7 @@ export default function CreateNewSessionPage() {
                 rounded: "lg",
                 border: "1px solid",
                 borderColor: "gray.200",
+                background: "white",
               })}>
               <div>
                 <div className={css({
