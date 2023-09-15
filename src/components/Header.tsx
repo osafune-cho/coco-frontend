@@ -1,6 +1,5 @@
 import NextLink from "next/link"
 import { css } from "../../styled-system/css"
-import { Quicksand } from "next/font/google"
 import { Noto_Sans_JP } from "next/font/google"
 import cocologo_type from "../../public/logo/cocologo_type.webp"
 import Image from "next/image"
