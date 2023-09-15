@@ -1,10 +1,8 @@
 "use client"
 
 import React from "react"
-import { useMyPresence, useOthers, useUpdateMyPresence } from "../../../../liveblocks.config"
 import { Material } from "./page"
 import { css } from "../../../../styled-system/css"
-import { useInView } from "react-intersection-observer"
 import { Slide } from "./Slide"
 
 const imagesStyle = css({
