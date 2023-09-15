@@ -30,8 +30,9 @@ export const Slide: React.FC<{ idx: number, url: string }> = ({ idx, url }) => {
         flexDirection: "column",
         gap: "4px",
       })}>
-        {othersOnThisSlide.map((other) =>
+        {othersOnThisSlide.map((other, jdx) =>
           <div
+            key={jdx}
             className={css({
               width: "12px",
               height: "12px",
