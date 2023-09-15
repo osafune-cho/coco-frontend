@@ -21,6 +21,7 @@ export default function CreateNewSessionPage() {
 
     await fetch(`${process.env.NEXT_PUBLIC_MEILISEARCH_URL!}/indexes/courses/documents/${courseCode}`, {
       method: "GET",
+      mode: "no-cors",
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!}`
       },
