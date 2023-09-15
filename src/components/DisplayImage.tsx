@@ -1,5 +1,6 @@
+"use client";
 import { css } from "../../styled-system/css"
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const imageStyle = css({
 	margin: "20px",
@@ -8,7 +9,6 @@ const imageStyle = css({
 	alignItems: "center",
 	width: "700px",
 })
-
 /**
  * 配列の全てのパスに対し、Image コンポーネントを返す
  */

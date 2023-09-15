@@ -1,4 +1,3 @@
-import { useMyPresence } from "../../../../liveblocks.config"
 import { css } from "../../../../styled-system/css"
 import { LiveChat } from "./LiveChat"
 import { Room } from "./Room"
