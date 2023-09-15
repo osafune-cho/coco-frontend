@@ -19,9 +19,9 @@ export default function CreateNewSessionPage() {
 
   const getCourse = async ({ courseCode }: { courseCode: string }) => {
 
+    // await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/meilisearch/indexes/courses/documents/${courseCode}`, {
     await fetch(`${process.env.NEXT_PUBLIC_MEILISEARCH_URL!}/indexes/courses/documents/${courseCode}`, {
       method: "GET",
-      mode: "no-cors",
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!}`
       },
